@@ -1,287 +1,16 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yuhei English Base - 英語トレーニング</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --text-main: #2c3e50;
-            --text-sub: #546e7a;
-        }
-
-        body {
-            font-family: 'Noto Sans JP', sans-serif;
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
-            position: relative;
-        }
-
-        /* --- 背景の流れる文字アニメーション --- */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .marquee-row {
-            white-space: nowrap;
-            font-size: 4rem;
-            font-family: 'Fredoka', sans-serif;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.4);
-            text-transform: uppercase;
-        }
-
-        .scroll-left { animation: scroll-L 40s linear infinite; }
-        .scroll-right { animation: scroll-R 50s linear infinite; }
-        
-        @keyframes scroll-L { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        @keyframes scroll-R { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
-
-        /* --- ヘッダー部分 --- */
-        header {
-            width: 100%;
-            background: rgba(102, 126, 234, 0.75);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: white;
-            padding: 40px 20px 60px;
-            text-align: center;
-            box-sizing: border-box;
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.3);
-        }
-
-        header h1 {
-            font-family: 'Fredoka', sans-serif;
-            margin: 0;
-            font-size: 2.5rem;
-            letter-spacing: 2px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        header p {
-            margin: 10px 0 0;
-            font-size: 1rem;
-            opacity: 0.95;
-            font-weight: 500;
-        }
-
-        /* --- メインコンテンツ --- */
-        main {
-            width: 100%;
-            max-width: 900px;
-            padding: 20px;
-            box-sizing: border-box;
-            margin-top: -30px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        /* --- カードのデザイン --- */
-        .card {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            border-radius: 20px;
-            padding: 25px 25px 70px 25px; /* 下部にボタン用の余白を確保 */
-            text-decoration: none;
-            color: inherit;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
-            transition: all 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.85);
-            box-shadow: 0 15px 35px rgba(31, 38, 135, 0.15);
-            border-color: rgba(255, 255, 255, 0.8);
-        }
-
-        .card:active {
-            transform: translateY(2px) scale(0.97);
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 4px 10px rgba(31, 38, 135, 0.1);
-            transition: all 0.05s ease;
-        }
-
-        .card-icon {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-        }
-
-        .card-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin: 0 0 10px;
-        }
-
-        .card-desc {
-            font-size: 0.9rem;
-            color: var(--text-sub);
-            margin: 0;
-            line-height: 1.5;
-            font-weight: 500;
-        }
-
-        /* ★ STARTボタン（カード右下） */
-        .card-start-btn {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: #3498db;
-            color: white;
-            font-weight: bold;
-            font-family: 'Fredoka', sans-serif;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
-            transition: background 0.3s;
-        }
-        .color-orange .card-start-btn { background: #f39c12; box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3); }
-        .color-gray .card-start-btn { background: #95a5a6; box-shadow: none; }
-
-        /* カード上部のカラーライン */
-        .card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-        }
-        .color-blue::before { background-color: #3498db; }
-        .color-orange::before { background-color: #f39c12; }
-        .color-gray::before { background-color: #95a5a6; }
-
-        /* ロック中カード */
-        .card.locked { opacity: 0.7; pointer-events: none; filter: grayscale(50%); }
-        .locked-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(0,0,0,0.15);
-            color: #333;
-            font-size: 0.75rem;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-
-        /* --- ★ Blooketバナー専用デザイン --- */
-        .blooket-banner {
-            grid-column: 1 / -1; /* 横幅いっぱいに広げる */
-            background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
-            color: white;
-            border: none;
-            padding: 20px 25px; /* クイズカードより少し細く */
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.3);
-            display: flex;
-            align-items: center;
-        }
-
-        .blooket-banner:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(0, 210, 255, 0.4);
-            background: linear-gradient(135deg, #19e3ff 0%, #4f8dee 100%);
-        }
-
-        .blooket-banner::before {
-            display: none; /* 上部のカラーラインを消す */
-        }
-
-        .blooket-content {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            gap: 20px;
-        }
-
-        .blooket-icon {
-            font-size: 2.5rem;
-        }
-
-        .blooket-text {
-            flex-grow: 1; /* 余白を埋める */
-        }
-
-        .blooket-banner .card-title,
-        .blooket-banner .card-desc {
-            color: white; /* 文字を白に */
-            margin: 0;
-        }
-
-        .blooket-arrow {
-            font-size: 1.5rem;
-            font-weight: bold;
-            background: rgba(255, 255, 255, 0.2);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-.blooket-banner:hover .blooket-arrow {
-            transform: translateX(5px);
-        }
-
-        /* ★追加：クイズカードにホバーした時、「START ➔」の文字（矢印ごと）を右に3px動かす */
-        .card:hover .card-start-btn {
-            transform: translateX(3px);
-        }
-
-        /* STARTボタンの基本設定にアニメーション設定を追加 (すでにある.card-start-btnの記述に transition を確認) */
-        .card-start-btn {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: #3498db;
-            color: white;
-            font-weight: bold;
-            font-family: 'Fredoka', sans-serif;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
-            transition: all 0.3s ease; /* ★ここが all 0.3s ease になっていればOK */
-        }
-        footer {
-            margin-top: auto;
-            padding: 30px 20px;
-            color: #546e7a;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-    </style>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Noto+Sans+JP:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body>
 
     <!-- 背景アニメーション -->
@@ -318,6 +47,22 @@
             </div>
         </a>
 
+        <a href="irregular-verbs/index.html" class="card color-gray locked">
+            <span class="locked-badge">Coming Soon</span>
+            <div class="card-icon">🔥</div>
+            <h2 class="card-title">不規則動詞マスター</h2>
+            <p class="card-desc">過去形・過去分詞の不規則変化を特訓！</p>
+            <div class="card-start-btn">LOCKED 🔒</div>
+        </a>
+
+
+        <a href="present-continuous/index.html" class="card color-mint">
+            <div class="card-icon">🏃‍♂️</div>
+            <h2 class="card-title">現在進行形 並び替えチャレンジ</h2>
+            <p class="card-desc">「今、〜している」を表す be動詞 + 〜ing！SW</p>
+            <div class="card-start-btn">START ➔</div>
+        </a>
+
         <a href="5w1h/index.html" class="card color-blue">
             <div class="card-icon">🎮</div>
             <h2 class="card-title">5W1H 並び替えチャレンジ</h2>
@@ -349,32 +94,32 @@
     <script>
         // 日替わりの名言リスト（5個）
         const quotes = [
-            { 
-                en: '"I\'m grateful… grateful for everything that\'s led me to this point and to you!!!" - Isaac Netero', 
-                jp: '「感謝するぜ お前と出会えた これまでの全てに」 - アイザック ネテロ' 
+            {
+                en: '"I\'m grateful… grateful for everything that\'s led me to this point and to you!!!" - Isaac Netero',
+                jp: '「感謝するぜ お前と出会えた これまでの全てに」 - アイザック ネテロ'
             },
-            { 
-                en: '"Set your heart ablaze." - Kyojuro Rengoku', 
-                jp: '「心を燃やせ」 - 煉獄 杏寿郎' 
+            {
+                en: '"Set your heart ablaze." - Kyojuro Rengoku',
+                jp: '「心を燃やせ」 - 煉獄 杏寿郎'
             },
-            { 
-                en: '"If you give up, the game is already over." - Mitsuyoshi Anzai', 
-                jp: '「あきらめたらそこで試合終了ですよ」 - 安西先生' 
+            {
+                en: '"If you give up, the game is already over." - Mitsuyoshi Anzai',
+                jp: '「あきらめたらそこで試合終了ですよ」 - 安西先生'
             },
-            { 
-                en: '"If you have time to think of a beautiful end, then live beautifully until the end." - Gintoki Sakata', 
-                jp: '「美しく最後を飾りつける暇があるなら、最後まで美しく生きようじゃねーか」 - 坂田 銀時' 
+            {
+                en: '"If you have time to think of a beautiful end, then live beautifully until the end." - Gintoki Sakata',
+                jp: '「美しく最後を飾りつける暇があるなら、最後まで美しく生きようじゃねーか」 - 坂田 銀時'
             },
-            { 
-                en: '"A lesson without pain is meaningless." - Edward Elric', 
-                jp: '「痛みを伴わない教訓には意義がない」 - エドワード・エルリック' 
+            {
+                en: '"A lesson without pain is meaningless." - Edward Elric',
+                jp: '「痛みを伴わない教訓には意義がない」 - エドワード・エルリック'
             }
         ];
 
         // 「今日の日付」から数字を作る（例: 2026年10月20日 → 20261020）
         const today = new Date();
         const dateNumber = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-        
+
         // 日付の数字を5(名言の数)で割った余りを出す（必ず0〜4のどれかになる＝全員同じになる）
         const quoteIndex = dateNumber % quotes.length;
 
@@ -383,4 +128,5 @@
         document.getElementById('quote-jp').innerText = quotes[quoteIndex].jp;
     </script>
 </body>
+
 </html>

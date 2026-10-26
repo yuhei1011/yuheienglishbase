@@ -1,0 +1,392 @@
+:root {
+    --text-main: #2c3e50;
+    --text-sub: #546e7a;
+}
+
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+    position: relative;
+}
+
+/* --- 背景の流れる文字アニメーション --- */
+.bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.marquee-row {
+    white-space: nowrap;
+    font-size: 4rem;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+}
+
+.scroll-left {
+    animation: scroll-L 40s linear infinite;
+}
+
+.scroll-right {
+    animation: scroll-R 50s linear infinite;
+}
+
+@keyframes scroll-L {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes scroll-R {
+    0% {
+        transform: translateX(-50%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* --- ヘッダー部分 --- */
+header {
+    width: 100%;
+    background: rgba(102, 126, 234, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    padding: 40px 20px 60px;
+    text-align: center;
+    box-sizing: border-box;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+header h1 {
+    font-family: 'Fredoka', sans-serif;
+    margin: 0;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+header p {
+    margin: 10px 0 0;
+    font-size: 1rem;
+    opacity: 0.95;
+    font-weight: 500;
+}
+
+/* --- メインコンテンツ --- */
+main {
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-top: -30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* --- カードのデザイン --- */
+.card {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    padding: 25px 25px 70px 25px;
+    /* 下部にボタン用の余白を確保 */
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 15px 35px rgba(31, 38, 135, 0.15);
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+.card:active {
+    transform: translateY(2px) scale(0.97);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 10px rgba(31, 38, 135, 0.1);
+    transition: all 0.05s ease;
+}
+
+.card-icon {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+}
+
+.card-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 10px;
+}
+
+.card-desc {
+    font-size: 0.9rem;
+    color: var(--text-sub);
+    margin: 0;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+/* ★ STARTボタン（カード右下） */
+.card-start-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: #3498db;
+    color: white;
+    font-weight: bold;
+    font-family: 'Fredoka', sans-serif;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+    transition: background 0.3s;
+}
+
+.color-orange .card-start-btn {
+    background: #f39c12;
+    box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);
+}
+
+.color-gray .card-start-btn {
+    background: #95a5a6;
+    box-shadow: none;
+}
+/* 1. レッド */
+.color-red::before { background-color: #e74c3c; }
+.color-red .card-start-btn {
+    background: #e74c3c;
+    box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+}
+
+/* 2. パープル */
+.color-purple::before { background-color: #9b59b6; }
+.color-purple .card-start-btn {
+    background: #9b59b6;
+    box-shadow: 0 4px 10px rgba(155, 89, 182, 0.3);
+}
+
+/* 3. ピンク */
+.color-pink::before { background-color: #e84393; }
+.color-pink .card-start-btn {
+    background: #e84393;
+    box-shadow: 0 4px 10px rgba(232, 67, 147, 0.3);
+}
+
+/* 4. ティール（明るい青緑） */
+.color-teal::before { background-color: #00cec9; }
+.color-teal .card-start-btn {
+    background: #00cec9;
+    box-shadow: 0 4px 10px rgba(0, 206, 201, 0.3);
+}
+
+/* 5. イエロー */
+.color-yellow::before { background-color: #f1c40f; }
+.color-yellow .card-start-btn {
+    background: #f1c40f;
+    box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3);
+    color: #fff;
+}
+
+/* 6. インディゴ（深い青紫） */
+.color-indigo::before { background-color: #6c5ce7; }
+.color-indigo .card-start-btn {
+    background: #6c5ce7;
+    box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
+}
+
+/* 7. ミント（鮮やかな緑） */
+.color-mint::before { background-color: #00b894; }
+.color-mint .card-start-btn {
+    background: #00b894;
+    box-shadow: 0 4px 10px rgba(0, 184, 148, 0.3);
+}
+
+/* 8. コーラル（明るいサーモンピンク） */
+.color-coral::before { background-color: #ff7675; }
+.color-coral .card-start-btn {
+    background: #ff7675;
+    box-shadow: 0 4px 10px rgba(255, 118, 117, 0.3);
+}
+
+/* カード上部のカラーライン */
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+}
+
+.color-blue::before {
+    background-color: #3498db;
+}
+
+.color-orange::before {
+    background-color: #f39c12;
+}
+
+.color-gray::before {
+    background-color: #95a5a6;
+}
+
+.color-green::before {
+    background-color: #2ecc71;
+}
+
+.color-green .card-start-btn {
+    background: #2ecc71;
+    box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+}
+
+/* ロック中カード */
+.card.locked {
+    opacity: 0.7;
+    pointer-events: none;
+    filter: grayscale(50%);
+}
+
+.locked-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.15);
+    color: #333;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+/* --- ★ Blooketバナー専用デザイン --- */
+.blooket-banner {
+    grid-column: 1 / -1;
+    /* 横幅いっぱいに広げる */
+    background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+    color: white;
+    border: none;
+    padding: 20px 25px;
+    /* クイズカードより少し細く */
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 210, 255, 0.3);
+    display: flex;
+    align-items: center;
+}
+
+.blooket-banner:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(0, 210, 255, 0.4);
+    background: linear-gradient(135deg, #19e3ff 0%, #4f8dee 100%);
+}
+
+.blooket-banner::before {
+    display: none;
+    /* 上部のカラーラインを消す */
+}
+
+.blooket-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+}
+
+.blooket-icon {
+    font-size: 2.5rem;
+}
+
+.blooket-text {
+    flex-grow: 1;
+    /* 余白を埋める */
+}
+
+.blooket-banner .card-title,
+.blooket-banner .card-desc {
+    color: white;
+    /* 文字を白に */
+    margin: 0;
+}
+
+.blooket-arrow {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.2);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.blooket-banner:hover .blooket-arrow {
+    transform: translateX(5px);
+}
+
+/* ★追加：クイズカードにホバーした時、「START ➔」の文字（矢印ごと）を右に3px動かす */
+.card:hover .card-start-btn {
+    transform: translateX(3px);
+}
+
+/* STARTボタンの基本設定にアニメーション設定を追加 (すでにある.card-start-btnの記述に transition を確認) */
+.card-start-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: #3498db;
+    color: white;
+    font-weight: bold;
+    font-family: 'Fredoka', sans-serif;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+    transition: all 0.3s ease;
+    /* ★ここが all 0.3s ease になっていればOK */
+}
+
+footer {
+    margin-top: auto;
+    padding: 30px 20px;
+    color: #546e7a;
+    font-size: 0.8rem;
+    font-weight: bold;
+}

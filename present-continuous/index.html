@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>現在進行形マスター！ - be動詞 + ing</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/quiz.css">
+</head>
+
+<body>
+
+    <div class="quiz-container">
+        <h1>現在進行形 🏃‍♂️💨💨💨</h1>
+        <div class="instruction">
+            前半戦：正しい「ing形」を選んで [CHECK]！<br>
+            後半戦：タイルを並び替えて「今〜している」文を作ろう！
+        </div>
+        <div id="quiz-list"></div>
+    </div>
+
+    <script>
+
+
+        const quizData = [
+            // --- 4択問題 (10問) ---
+            { type: "choice", word: "make", choices: ["making", "makeing", "makking", "maken"], answer: "making", jp: "作る (make) の正しいing形は？" },
+            { type: "choice", word: "run", choices: ["runing", "running", "raning", "run"], answer: "running", jp: "走る (run) の正しいing形は？" },
+            { type: "choice", word: "study", choices: ["studying", "studing", "studyying", "studies"], answer: "studying", jp: "勉強する (study) の正しいing形は？" },
+            { type: "choice", word: "have", choices: ["haveing", "haves", "having", "havving"], answer: "having", jp: "持っている・食べる (have) の正しいing形は？" },
+            { type: "choice", word: "swim", choices: ["swiming", "swimming", "swamming", "swimen"], answer: "swimming", jp: "泳ぐ (swim) の正しいing形は？" },
+            { type: "choice", word: "play", choices: ["plaing", "playing", "playying", "plaiing"], answer: "playing", jp: "遊ぶ・する (play) の正しいing形は？" },
+            { type: "choice", word: "write", choices: ["writeing", "writting", "writing", "writen"], answer: "writing", jp: "書く (write) の正しいing形は？" },
+            { type: "choice", word: "sit", choices: ["siting", "sitting", "sateing", "sitten"], answer: "sitting", jp: "座る (sit) の正しいing形は？" },
+            { type: "choice", word: "eat", choices: ["eatting", "eating", "ateing", "eaten"], answer: "eating", jp: "食べる (eat) の正しいing形は？" },
+            { type: "choice", word: "lie", choices: ["lieing", "liing", "lying", "lyeing"], answer: "lying", jp: "横たわる (lie) の正しいing形は？ (※難問🔥)" },
+
+            // --- 並び替え問題 (10問) ---
+            { type: "order", tiles: ["I", "am", "playing", "Apex", "now"], validAnswers: ["i am playing apex now"], jp: "私は今Apexをしています。" },
+            { type: "order", tiles: ["He", "is", "making", "a house", "in Minecraft"], validAnswers: ["he is making a house in minecraft", "in minecraft he is making a house"], jp: "彼はマイクラで家を作っています。" },
+            { type: "order", tiles: ["Are you", "studying", "English", "now"], validAnswers: ["are you studying english now", "now are you studying english"], jp: "あなたは今英語を勉強していますか？" },
+            { type: "order", tiles: ["What", "are you", "doing"], validAnswers: ["what are you doing"], jp: "あなたは何をしているの？" },
+            { type: "order", tiles: ["She", "is not", "watching", "YouTube"], validAnswers: ["she is not watching youtube"], jp: "彼女はYouTubeを見ていません。" },
+            { type: "order", tiles: ["They", "are", "running", "in the park"], validAnswers: ["they are running in the park"], jp: "彼らは公園を走っています。" },
+            { type: "order", tiles: ["Is", "your brother", "sleeping"], validAnswers: ["is your brother sleeping"], jp: "あなたのお兄ちゃんは寝ているの？" },
+            { type: "order", tiles: ["We", "are", "having", "dinner", "now"], validAnswers: ["we are having dinner now", "now we are having dinner"], jp: "私たちは今夕食を食べています。" },
+            { type: "order", tiles: ["Who", "is", "swimming", "in the pool"], validAnswers: ["who is swimming in the pool"], jp: "誰がプールで泳いでいるの？" },
+            { type: "order", tiles: ["I", "am", "writing", "a letter"], validAnswers: ["i am writing a letter"], jp: "私は手紙を書いています。" }
+        ];
+
+
+    </script>
+
+
+    <script src="../assets/js/quiz.js"></script>
+</body>
+
+</html>

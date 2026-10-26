@@ -5,270 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SVO Power Challenge! - 5W1H Edition</title>
-    <style>
-        :root {
-            --primary: #3498db;
-            --success: #2ecc71;
-            --error: #e74c3c;
-            --bg: #f8f9fa;
-        }
-
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background: var(--bg);
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .quiz-container {
-            max-width: 850px;
-            width: 100%;
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            box-sizing: border-box;
-        }
-
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 10px;
-            margin-top: 0;
-            font-size: 1.8em;
-        }
-
-        .instruction {
-            font-size: 0.9em;
-            color: #7f8c8d;
-            margin-bottom: 20px;
-            text-align: center;
-            line-height: 1.5;
-        }
-
-        .question-card {
-            border-bottom: 2px dashed #eee;
-            padding: 20px 0;
-            margin-bottom: 10px;
-        }
-
-        .level-label {
-            font-size: 0.7em;
-            background: #e0e0e0;
-            padding: 2px 8px;
-            border-radius: 10px;
-            color: #555;
-            font-weight: bold;
-        }
-
-        .translation {
-            font-size: 0.85em;
-            color: #34495e;
-            margin: 5px 0;
-            font-weight: bold;
-            display: block;
-        }
-
-        .question-img {
-            width: 100%;
-            max-height: 180px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            background: #eee;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .drop-container {
-            position: relative;
-            margin: 10px 0;
-        }
-
-        .drop-area {
-            min-height: 80px;
-            border: 2px solid #ddd;
-            border-radius: 12px;
-            padding: 10px 50px 10px 15px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            background: #fafafa;
-            transition: 0.3s;
-            justify-content: flex-start;
-            align-items: center;
-        }
-
-        .drop-area .chunk-tile:first-child {
-            display: inline-block;
-            line-height: 2.2em;
-        }
-
-        .drop-area .chunk-tile:first-child::first-letter {
-            text-transform: uppercase !important;
-        }
-
-        .period-mark {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 30px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .correct-bg {
-            background: #e8f8f5;
-            border-color: var(--success);
-        }
-
-        .error-bg {
-            background: #fdedec;
-            border-color: var(--error);
-        }
-
-        .pool-area {
-            min-height: 70px;
-            padding: 15px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            background: #fff;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            margin-top: 10px;
-            justify-content: flex-start;
-            align-items: center;
-        }
-
-        .chunk-tile {
-            background: white;
-            border: 2px solid #3498db;
-            padding: 0 20px;
-            border-radius: 35px;
-            cursor: pointer;
-            user-select: none;
-            transition: 0.2s;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
-            font-weight: 600;
-            color: #2c3e50;
-            text-align: center;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 2.2em;
-            font-size: 1em;
-        }
-
-        .chunk-tile:hover {
-            background: #3498db;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .controls {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 0 35px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 900;
-            font-size: 1.1em;
-            transition: 0.2s;
-            box-shadow: 0 4px 0px rgba(0, 0, 0, 0.1);
-            letter-spacing: 1px;
-            height: 2.4em;
-            display: flex;
-            align-items: center;
-        }
-
-        .btn-check {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-check:disabled {
-            background: #bdc3c7;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
-        }
-
-        .btn-reset {
-            background: #bdc3c7;
-            color: white;
-        }
-
-        .result-msg {
-            font-weight: 900;
-            font-size: 1.3em;
-            height: 1.5em;
-            text-align: center;
-            display: flex;
-            /* ★追加：アイコンと並べるため */
-            align-items: center;
-            /* ★追加：アイコンと並べるため */
-            justify-content: center;
-            /* ★追加：中央寄せ */
-            gap: 10px;
-            /* ★追加：文字とアイコンの隙間 */
-        }
-
-        .power-text {
-            color: var(--success);
-            animation: bounce 0.5s infinite alternate;
-            display: inline-block;
-        }
-
-        /* ★追加：音声再生ボタンのデザイン */
-        .play-audio-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            font-size: 1.2em;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s;
-        }
-
-        .play-audio-btn:hover {
-            transform: scale(1.1);
-        }
-
-        @keyframes bounce {
-            from {
-                transform: scale(1) rotate(-5deg);
-            }
-
-            to {
-                transform: scale(1.1) rotate(5deg);
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/quiz.css">
 </head>
 
 <body>
@@ -283,38 +21,25 @@
     </div>
 
     <script>
-        const correctSound = new Audio('sounds/ringring.mp3');
-        const errorSound = new Audio('sounds/buzzer.mp3');
-        let isPlaying = false;
-
-        function speakText(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'en-US';
-                utterance.rate = 0.75;
-                utterance.pitch = 1.0;
-                window.speechSynthesis.speak(utterance);
-            }
-        }
 
         const quizData = [
             {
                 tiles: ["what", "do you", "make", "in Minecraft"],
                 validAnswers: ["what do you make in minecraft"],
                 jp: "マイクラの中で何作るん？",
-                img: "img/img01.jpg"
+                img: "assets/img/img01.jpg"
             },
             {
                 tiles: ["who", "do you", "play", "Apex", "with"],
                 validAnswers: ["who do you play apex with"],
                 jp: "誰と一緒にApexするん？",
-                img: "img/img02.jpg"
+                img: "assets/img/img02.jpg"
             },
             {
                 tiles: ["where", "do you", "play", "games", "at home"],
                 validAnswers: ["where do you play games at home"],
-                jp: "家の中でどこでゲームするん？"
+                jp: "家の中でどこでゲームするん？",
+
             },
             {
                 tiles: ["when", "do you", "watch", "YouTube", "on weekends"],
@@ -324,7 +49,8 @@
             {
                 tiles: ["why", "do you", "look", "at me"],
                 validAnswers: ["why do you look at me"],
-                jp: "なんで俺のこと見るん？"
+                jp: "なんで俺のこと見るん？",
+
             },
             {
                 tiles: ["how", "do you", "go", "to school"],
@@ -403,145 +129,9 @@
             }
         ];
 
-        function shuffle(array) {
-            let arr = [...array];
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
-        }
-
-        const quizList = document.getElementById('quiz-list');
-
-        quizData.forEach((data, i) => {
-            const shuffledTiles = shuffle(data.tiles);
-            const card = document.createElement('div');
-            card.className = 'question-card';
-
-            const imageHTML = data.img ? `<img src="${data.img}" class="question-img" alt="問題画像" loading="lazy">` : "";
-
-            card.innerHTML = `
-            ${imageHTML}
-            <div> <strong>Q${i + 1}</strong></div>
-            <span class="translation">${data.jp}</span>
-            <div class="drop-container">
-                <div class="drop-area" id="drop-${i}"></div>
-                <span class="period-mark" id="period-${i}">.</span>
-            </div>
-            <div class="pool-area" id="pool-${i}"></div>
-            <div class="controls">
-                <div id="msg-${i}" class="result-msg"></div>
-                <div class="button-group">
-                    <button class="btn btn-reset" onclick="reset(${i})">RESET</button>
-                    <button class="btn btn-check" id="check-btn-${i}" onclick="check(${i})">CHECK</button>
-                </div>
-            </div>
-        `;
-            quizList.appendChild(card);
-
-            const pool = document.getElementById(`pool-${i}`);
-            shuffledTiles.forEach(text => {
-                const tile = document.createElement('div');
-                tile.className = 'chunk-tile';
-                tile.textContent = text;
-                tile.onclick = () => moveTile(tile, i);
-                pool.appendChild(tile);
-            });
-        });
-
-        function moveTile(tile, qIdx) {
-            const drop = document.getElementById(`drop-${qIdx}`);
-            const pool = document.getElementById(`pool-${qIdx}`);
-            const msg = document.getElementById(`msg-${qIdx}`);
-            const period = document.getElementById(`period-${qIdx}`);
-
-            if (tile.parentElement === pool) drop.appendChild(tile);
-            else pool.appendChild(tile);
-
-            msg.textContent = "";
-            drop.className = "drop-area";
-
-            if (drop.children.length > 0) {
-                const firstWord = drop.children[0].textContent.toLowerCase();
-                const questionWords = ["what", "who", "where", "when", "why", "how", "do", "does", "is", "are", "am", "can", "will"];
-                const isQuestion = questionWords.some(w => firstWord.startsWith(w));
-                period.textContent = isQuestion ? "?" : ".";
-            } else {
-                period.textContent = ".";
-            }
-        }
-
-       function check(idx) {
-            if (isPlaying) return;
-            const drop = document.getElementById(`drop-${idx}`);
-            const msg = document.getElementById(`msg-${idx}`);
-            const checkBtn = document.getElementById(`check-btn-${idx}`);
-            const userAns = Array.from(drop.children).map(t => t.textContent.toLowerCase()).join(' ');
-            const isCorrect = quizData[idx].validAnswers.includes(userAns);
-
-            isPlaying = true;
-            checkBtn.disabled = true;
-
-            const unlockUI = () => {
-                isPlaying = false;
-                checkBtn.disabled = false;
-            };
-
-            // ★追加の最強安全装置：iPhoneが合図をサボっても、2秒後(2000ミリ秒)には「絶対に」次を押せるように強制解除する
-            setTimeout(unlockUI, 2000);
-
-            if (isCorrect) {
-                correctSound.onended = unlockUI; // ★変更：鳴らす前にセットする
-                correctSound.currentTime = 0;
-                let playPromise = correctSound.play();
-
-                if (playPromise !== undefined) {
-                    playPromise.catch(unlockUI);
-                }
-
-                msg.innerHTML = `
-                    <span class="power-text">Correct! ✨</span>
-                    <button class="play-audio-btn" onclick="speakText('${userAns}')" title="もう一度聞く">🔊</button>
-                `;
-                drop.className = "drop-area correct-bg";
-
-                speakText(userAns);
-            } else {
-                errorSound.onended = unlockUI; // ★変更：鳴らす前にセットする
-                errorSound.currentTime = 0;
-                let playPromise = errorSound.play();
-
-                if (playPromise !== undefined) {
-                    playPromise.catch(unlockUI);
-                }
-
-                msg.textContent = "❌ Try Again!";
-                msg.style.color = "var(--error)";
-                drop.className = "drop-area error-bg";
-            }
-        }
-
-        function reset(idx) {
-            const drop = document.getElementById(`drop-${idx}`);
-            const pool = document.getElementById(`pool-${idx}`);
-            const msg = document.getElementById(`msg-${idx}`);
-            const checkBtn = document.getElementById(`check-btn-${idx}`);
-            const period = document.getElementById(`period-${idx}`);
-
-            while (drop.firstChild) pool.appendChild(drop.firstChild);
-
-            msg.textContent = "";
-            drop.className = "drop-area";
-            period.textContent = ".";
-
-            isPlaying = false;
-            checkBtn.disabled = false;
-            correctSound.pause();
-            errorSound.pause();
-        }
     </script>
 
+    <script src="../assets/js/quiz.js"></script>
 </body>
 
 </html>
