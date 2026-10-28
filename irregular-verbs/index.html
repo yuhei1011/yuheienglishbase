@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>不規則動詞マスター - Yuhei English Base</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Noto+Sans+JP:wght@500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --text-main: #2c3e50;
+            --text-sub: #546e7a;
+            --bg-gradient: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--bg-gradient);
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-family: 'Fredoka', 'Noto Sans JP', sans-serif;
+            color: #fff;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            margin: 10px 0 5px;
+            font-size: 2.2rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        }
+
+        /* --- 画面切り替え制御 --- */
+        .screen {
+            width: 100%;
+            max-width: 850px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- 1. カテゴリ選択画面 --- */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .cat-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 25px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(31, 38, 135, 0.1);
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 12px 30px rgba(31, 38, 135, 0.18);
+        }
+
+        .cat-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+        }
+
+        .cat-aaa::before { background: #e74c3c; }
+        .cat-aba::before { background: #f39c12; }
+        .cat-abb::before { background: #3498db; }
+        .cat-abc::before { background: #9b59b6; }
+        .cat-all::before { background: #2ecc71; }
+
+        .cat-card.cat-all {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(232, 248, 245, 0.95) 100%);
+        }
+
+        .cat-badge {
+            align-self: flex-start;
+            font-size: 0.8rem;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .cat-aaa .cat-badge { background: #e74c3c; }
+        .cat-aba .cat-badge { background: #f39c12; }
+        .cat-abb .cat-badge { background: #3498db; }
+        .cat-abc .cat-badge { background: #9b59b6; }
+        .cat-all .cat-badge { background: #2ecc71; }
+
+        .cat-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin: 0 0 8px;
+        }
+
+        .cat-desc {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            margin: 0 0 15px;
+            line-height: 1.4;
+        }
+
+        .cat-examples {
+            font-size: 0.85rem;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #34495e;
+            margin-top: auto;
+        }
+
+        /* --- 2. フラッシュカード画面 --- */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 450px;
+            margin-bottom: 15px;
+        }
+
+        .btn-sub {
+            background: rgba(255, 255, 255, 0.85);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: var(--text-main);
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: inherit;
+        }
+
+        .btn-sub:hover {
+            background: #fff;
+            transform: translateY(-2px);
+        }
+
+        .btn-sub.active-shuffle {
+            background: #f39c12;
+            color: white;
+        }
+
+        .flashcard-container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 450px;
+            height: 310px;
+            margin-bottom: 25px;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .flashcard.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 25px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        /* 表面（原形） */
+        .card-front {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .verb-type-badge {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 5px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            position: absolute;
+            top: 20px;
+        }
+
+        .base-word {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 4.2rem;
+            font-weight: 600;
+            margin: 0;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+        }
+
+        .tap-hint {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.85rem;
+            opacity: 0.85;
+            font-weight: bold;
+        }
+
+        /* 裏面（3つの活用＋日本語の意味） */
+        .card-back {
+            background: #ffffff;
+            color: var(--text-main);
+            transform: rotateY(180deg);
+            border: 4px solid #2ecc71;
+        }
+
+        .jp-meaning {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #e67e22;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        .forms-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            padding: 12px 8px;
+            border-radius: 15px;
+        }
+
+        .form-label {
+            font-size: 0.7rem;
+            color: #7f8c8d;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .form-word {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #2c3e50;
+            word-break: break-word;
+        }
+
+        .form-sub {
+            font-size: 0.75rem;
+            color: #e74c3c;
+            display: block;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        /* 音声再生ボタン */
+        .play-audio-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.35);
+            transition: 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
+        .play-audio-btn:hover {
+            transform: scale(1.05);
+            background: #2980b9;
+        }
+
+        .play-audio-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* ナビゲーションボタン */
+        .controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .btn-nav {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #95a5a6;
+            color: white;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .btn-nav:hover { transform: translateY(-2px); }
+        .btn-nav:active { transform: translateY(2px); box-shadow: none; }
+
+        .btn-next {
+            background: #2ecc71;
+        }
+
+        .progress {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: #2c3e50;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 5px 18px;
+            border-radius: 20px;
+        }
+
+        .back-home-link {
+            margin-top: 20px;
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 8px 20px;
+            border-radius: 20px;
+            transition: 0.2s;
+        }
+
+        .back-home-link:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>不規則動詞マスター 🔥</h1>
+    <div class="subtitle" id="page-subtitle">まずは練習したいグループを選ぼう！</div>
+
+    <!-- ==========================================
+         画面1：4つの分類（カテゴリ）選択画面
+    =========================================== -->
+    <div id="category-screen" class="screen active">
+        <div class="category-grid">
+            <!-- 1. A-A-A型 -->
+            <div class="cat-card cat-aaa" onclick="startDeck('AAA')">
+                <span class="cat-badge">4語</span>
+                <h2 class="cat-title">① A - A - A 型</h2>
+                <p class="cat-desc">原形・過去形・過去分詞がすべて同じ形！まずはここから完璧にしよう。</p>
+                <div class="cat-examples">例: cut - cut - cut</div>
+            </div>
+
+            <!-- 2. A-B-A型 -->
+            <div class="cat-card cat-aba" onclick="startDeck('ABA')">
+                <span class="cat-badge">3語</span>
+                <h2 class="cat-title">② A - B - A 型</h2>
+                <p class="cat-desc">原形と過去分詞が同じ形になるサンドイッチパターン！</p>
+                <div class="cat-examples">例: run - ran - run</div>
+            </div>
+
+            <!-- 3. A-B-B型 -->
+            <div class="cat-card cat-abb" onclick="startDeck('ABB')">
+                <span class="cat-badge">28語</span>
+                <h2 class="cat-title">③ A - B - B 型</h2>
+                <p class="cat-desc">過去形と過去分詞が同じ形！一番よく出る超重要グループ！</p>
+                <div class="cat-examples">例: buy - bought - bought</div>
+            </div>
+
+            <!-- 4. A-B-C型 -->
+            <div class="cat-card cat-abc" onclick="startDeck('ABC')">
+                <span class="cat-badge">20語</span>
+                <h2 class="cat-title">④ A - B - C 型</h2>
+                <p class="cat-desc">3つすべてが違う形に変化！声に出してリズムで覚えよう！</p>
+                <div class="cat-examples">例: go - went - gone</div>
+            </div>
+
+            <!-- すべて（全51語） -->
+            <div class="cat-card cat-all" onclick="startDeck('ALL')">
+                <span class="cat-badge">全55語</span>
+                <h2 class="cat-title">👑 オール・チャレンジ（全55語）</h2>
+                <p class="cat-desc">4つのグループのすべての単語をまとめて総復習！シャッフルして実力を試そう！</p>
+                <div class="cat-examples">全55語コンプリートを目指せ！</div>
+            </div>
+        </div>
+
+        <a href="../index.html" class="back-home-link">🏠 トップページへ戻る</a>
+    </div>
+
+    <!-- ==========================================
+         画面2：フラッシュカード学習画面
+    =========================================== -->
+    <div id="flashcard-screen" class="screen">
+        <div class="top-bar">
+            <button class="btn-sub" onclick="showCategories()">◀ グループ選択へ</button>
+            <button class="btn-sub" id="shuffle-btn" onclick="shuffleDeck()">🔀 シャッフル</button>
+        </div>
+
+        <div class="flashcard-container" onclick="flipCard()">
+            <div class="flashcard" id="flashcard">
+                <!-- 表面 -->
+                <div class="card-face card-front" id="card-front-bg">
+                    <div class="verb-type-badge" id="verb-type">A-A-A型</div>
+                    <p class="base-word" id="base-word">cut</p>
+                    <div class="tap-hint">👆 タップで裏返す</div>
+                </div>
+
+                <!-- 裏面 -->
+                <div class="card-face card-back" id="card-back-border">
+                    <div class="jp-meaning" id="jp-meaning">〜を切る</div>
+                    <div class="forms-grid">
+                        <div>
+                            <div class="form-label">原形</div>
+                            <div class="form-word" id="form-base">cut</div>
+                        </div>
+                        <div>
+                            <div class="form-label">過去形</div>
+                            <div class="form-word" id="form-past">cut</div>
+                        </div>
+                        <div>
+                            <div class="form-label">過去分詞</div>
+                            <div class="form-word" id="form-pp">cut</div>
+                        </div>
+                    </div>
+                    <button class="play-audio-btn" onclick="playAudio(event)">
+                        🔊 発音を聞く
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-nav" onclick="prevCard()">◀ PREV</button>
+            <button class="btn-nav btn-next" id="next-btn" onclick="nextCard()">NEXT ▶</button>
+        </div>
+
+        <div class="progress" id="progress-text">1 / 4</div>
+    </div>
+
+    <script>
+        // PDF掲載の全51語データ
+        const allVerbsData = [
+            // --- 1. A-A-A型 (4語) ---
+            { group: "AAA", type: "A-A-A型", base: "cut", past: "cut", pp: "cut", jp: "〜を切る" },
+            { group: "AAA", type: "A-A-A型", base: "hit", past: "hit", pp: "hit", jp: "〜を打つ" },
+            { group: "AAA", type: "A-A-A型", base: "put", past: "put", pp: "put", jp: "〜を置く" },
+            { group: "AAA", type: "A-A-A型", base: "set", past: "set", pp: "set", jp: "〜を置く" },
+
+            // --- 2. A-B-A型 (3語) ---
+            { group: "ABA", type: "A-B-A型", base: "become", past: "became", pp: "become", jp: "〜になる" },
+            { group: "ABA", type: "A-B-A型", base: "come", past: "came", pp: "come", jp: "来る" },
+            { group: "ABA", type: "A-B-A型", base: "run", past: "ran", pp: "run", jp: "走る" },
+
+            // --- 3. A-B-B型 (25語) ---
+            { group: "ABB", type: "A-B-B型", base: "bring", past: "brought", pp: "brought", jp: "〜を持ってくる" },
+            { group: "ABB", type: "A-B-B型", base: "build", past: "built", pp: "built", jp: "〜を建てる" },
+            { group: "ABB", type: "A-B-B型", base: "buy", past: "bought", pp: "bought", jp: "〜を買う" },
+            { group: "ABB", type: "A-B-B型", base: "catch", past: "caught", pp: "caught", jp: "〜をつかまえる" },
+            { group: "ABB", type: "A-B-B型", base: "feel", past: "felt", pp: "felt", jp: "感じる" },
+            { group: "ABB", type: "A-B-B型", base: "find", past: "found", pp: "found", jp: "〜を見つける" },
+            { group: "ABB", type: "A-B-B型", base: "have", past: "had", pp: "had", jp: "〜を持っている" },
+            { group: "ABB", type: "A-B-B型", base: "hear", past: "heard", pp: "heard", jp: "〜が聞こえる" },
+            { group: "ABB", type: "A-B-B型", base: "keep", past: "kept", pp: "kept", jp: "〜を持ち続ける" },
+            { group: "ABB", type: "A-B-B型", base: "learn", past: "learned<span class='form-sub'>(learnt)</span>", pp: "learned<span class='form-sub'>(learnt)</span>", jp: "〜を学ぶ", phonetics: "learn, learned, learned" },
+            { group: "ABB", type: "A-B-B型", base: "leave", past: "left", pp: "left", jp: "去る" },
+            { group: "ABB", type: "A-B-B型", base: "lose", past: "lost", pp: "lost", jp: "〜を失う" },
+            { group: "ABB", type: "A-B-B型", base: "make", past: "made", pp: "made", jp: "〜を作る" },
+            { group: "ABB", type: "A-B-B型", base: "meet", past: "met", pp: "met", jp: "〜と会う" },
+            { group: "ABB", type: "A-B-B型", base: "pay", past: "paid", pp: "paid", jp: "〜を支払う" },
+            { group: "ABB", type: "A-B-B型", base: "read", past: "read<span class='form-sub'>[réd]</span>", pp: "read<span class='form-sub'>[réd]</span>", jp: "〜を読む", phonetics: "read, red, red" },
+            { group: "ABB", type: "A-B-B型", base: "say", past: "said", pp: "said", jp: "〜と言う" },
+            { group: "ABB", type: "A-B-B型", base: "sell", past: "sold", pp: "sold", jp: "〜を売る" },
+            { group: "ABB", type: "A-B-B型", base: "send", past: "sent", pp: "sent", jp: "〜を送る" },
+            { group: "ABB", type: "A-B-B型", base: "sit", past: "sat", pp: "sat", jp: "座る" },
+            { group: "ABB", type: "A-B-B型", base: "sleep", past: "slept", pp: "slept", jp: "眠る" },
+            { group: "ABB", type: "A-B-B型", base: "spend", past: "spent", pp: "spent", jp: "〜を過ごす" },
+            { group: "ABB", type: "A-B-B型", base: "stand", past: "stood", pp: "stood", jp: "立っている" },
+            { group: "ABB", type: "A-B-B型", base: "teach", past: "taught", pp: "taught", jp: "〜を教える" },
+            { group: "ABB", type: "A-B-B型", base: "tell", past: "told", pp: "told", jp: "〜に話す" },
+            { group: "ABB", type: "A-B-B型", base: "think", past: "thought", pp: "thought", jp: "〜と考える" },
+            { group: "ABB", type: "A-B-B型", base: "understand", past: "understood", pp: "understood", jp: "〜を理解する" },
+            { group: "ABB", type: "A-B-B型", base: "win", past: "won", pp: "won", jp: "勝つ" },
+
+            // --- 4. A-B-C型 (19語) ---
+            { group: "ABC", type: "A-B-C型", base: "begin", past: "began", pp: "begun", jp: "〜を始める" },
+            { group: "ABC", type: "A-B-C型", base: "break", past: "broke", pp: "broken", jp: "〜をこわす" },
+            { group: "ABC", type: "A-B-C型", base: "do", past: "did", pp: "done", jp: "〜をする" },
+            { group: "ABC", type: "A-B-C型", base: "drink", past: "drank", pp: "drunk", jp: "〜を飲む" },
+            { group: "ABC", type: "A-B-C型", base: "drive", past: "drove", pp: "driven", jp: "〜を運転する" },
+            { group: "ABC", type: "A-B-C型", base: "eat", past: "ate", pp: "eaten", jp: "〜を食べる" },
+            { group: "ABC", type: "A-B-C型", base: "get", past: "got", pp: "got<span class='form-sub'>(gotten)</span>", jp: "〜を得る", phonetics: "get, got, got" },
+            { group: "ABC", type: "A-B-C型", base: "give", past: "gave", pp: "given", jp: "〜を与える" },
+            { group: "ABC", type: "A-B-C型", base: "go", past: "went", pp: "gone", jp: "行く" },
+            { group: "ABC", type: "A-B-C型", base: "know", past: "knew", pp: "known", jp: "〜を知っている" },
+            { group: "ABC", type: "A-B-C型", base: "rise", past: "rose", pp: "risen", jp: "昇る" },
+            { group: "ABC", type: "A-B-C型", base: "see", past: "saw", pp: "seen", jp: "見える" },
+            { group: "ABC", type: "A-B-C型", base: "show", past: "showed", pp: "shown<span class='form-sub'>(showed)</span>", jp: "〜を見せる", phonetics: "show, showed, shown" },
+            { group: "ABC", type: "A-B-C型", base: "sing", past: "sang", pp: "sung", jp: "歌う" },
+            { group: "ABC", type: "A-B-C型", base: "speak", past: "spoke", pp: "spoken", jp: "話す" },
+            { group: "ABC", type: "A-B-C型", base: "swim", past: "swam", pp: "swum", jp: "泳ぐ" },
+            { group: "ABC", type: "A-B-C型", base: "take", past: "took", pp: "taken", jp: "〜を取る" },
+            { group: "ABC", type: "A-B-C型", base: "wake", past: "woke", pp: "woken", jp: "目を覚ます" },
+            { group: "ABC", type: "A-B-C型", base: "wear", past: "wore", pp: "worn", jp: "〜を着ている" },
+            { group: "ABC", type: "A-B-C型", base: "write", past: "wrote", pp: "written", jp: "〜を書く" }
+        ];
+
+        // グループごとのテーマカラー設定
+        const groupColors = {
+            AAA: { bg: "linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)", border: "#e74c3c", title: "① A-A-A型（すべて同じ）" },
+            ABA: { bg: "linear-gradient(135deg, #f39c12 0%, #d68910 100%)", border: "#f39c12", title: "② A-B-A型（原形と過去分詞が同じ）" },
+            ABB: { bg: "linear-gradient(135deg, #3498db 0%, #2980b9 100%)", border: "#3498db", title: "③ A-B-B型（過去形と過去分詞が同じ）" },
+            ABC: { bg: "linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%)", border: "#9b59b6", title: "④ A-B-C型（すべて異なる）" },
+            ALL: { bg: "linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)", border: "#2ecc71", title: "👑 オール・チャレンジ" }
+        };
+
+        let currentDeck = [];
+        let originalDeck = [];
+        let currentIndex = 0;
+        let isShuffled = false;
+
+        const categoryScreen = document.getElementById('category-screen');
+        const flashcardScreen = document.getElementById('flashcard-screen');
+        const flashcard = document.getElementById('flashcard');
+        const pageSubtitle = document.getElementById('page-subtitle');
+        const shuffleBtn = document.getElementById('shuffle-btn');
+
+        // グループ選択時の処理
+        function startDeck(groupKey) {
+            if (groupKey === 'ALL') {
+                originalDeck = [...allVerbsData];
+            } else {
+                originalDeck = allVerbsData.filter(v => v.group === groupKey);
+            }
+            currentDeck = [...originalDeck];
+            currentIndex = 0;
+            isShuffled = false;
+            shuffleBtn.classList.remove('active-shuffle');
+            shuffleBtn.textContent = "🔀 シャッフル";
+
+            // テーマカラーの適用
+            const theme = groupColors[groupKey];
+            document.getElementById('card-front-bg').style.background = theme.bg;
+            document.getElementById('card-back-border').style.borderColor = theme.border;
+            document.getElementById('next-btn').style.background = theme.border;
+            pageSubtitle.textContent = theme.title;
+
+            // 画面切り替え
+            categoryScreen.classList.remove('active');
+            flashcardScreen.classList.add('active');
+
+            updateCard();
+        }
+
+        // カテゴリ一覧に戻る
+        function showCategories() {
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            flashcardScreen.classList.remove('active');
+            categoryScreen.classList.add('active');
+            pageSubtitle.textContent = "まずは練習したいグループを選ぼう！";
+        }
+
+        // カードの表示更新
+        function updateCard() {
+            const data = currentDeck[currentIndex];
+            
+            // 裏返っていたら表に戻す
+            flashcard.classList.remove('is-flipped');
+
+            // 少し遅延させて中身を書き換える（裏返る途中で答えが見えないようにする配慮）
+            setTimeout(() => {
+                document.getElementById('verb-type').textContent = data.type;
+                document.getElementById('base-word').textContent = data.base;
+
+                document.getElementById('jp-meaning').textContent = data.jp;
+                document.getElementById('form-base').innerHTML = data.base;
+                document.getElementById('form-past').innerHTML = data.past;
+                document.getElementById('form-pp').innerHTML = data.pp;
+
+                document.getElementById('progress-text').textContent = `${currentIndex + 1} / ${currentDeck.length}`;
+            }, 150);
+        }
+
+        // カードを裏返す
+        function flipCard() {
+            flashcard.classList.toggle('is-flipped');
+        }
+
+        // 次のカードへ
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % currentDeck.length;
+            updateCard();
+        }
+
+        // 前のカードへ
+        function prevCard() {
+            currentIndex = (currentIndex - 1 + currentDeck.length) % currentDeck.length;
+            updateCard();
+        }
+
+        // シャッフル切り替え
+        function shuffleDeck() {
+            isShuffled = !isShuffled;
+            if (isShuffled) {
+                // シャッフル実行
+                for (let i = currentDeck.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [currentDeck[i], currentDeck[j]] = [currentDeck[j], currentDeck[i]];
+                }
+                shuffleBtn.classList.add('active-shuffle');
+                shuffleBtn.textContent = "🔀 シャッフル中";
+            } else {
+                // 元の順番に戻す
+                currentDeck = [...originalDeck];
+                shuffleBtn.classList.remove('active-shuffle');
+                shuffleBtn.textContent = "🔀 シャッフル";
+            }
+            currentIndex = 0;
+            updateCard();
+        }
+
+        // 音声再生（原形・過去形・過去分詞の3つを連続読み上げ）
+        function playAudio(event) {
+            event.stopPropagation(); // カードが裏返るのを防ぐ
+            const data = currentDeck[currentIndex];
+            const textToSpeak = data.phonetics ? data.phonetics : `${data.base}, ${data.past}, ${data.pp}`;
+
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(textToSpeak);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.8;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+    </script>
+</body>
+
+</html>
